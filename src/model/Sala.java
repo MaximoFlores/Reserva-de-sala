@@ -7,15 +7,15 @@ import defaultSala.Instancia;
 import defaultSala.Oferta;
 import defaultSala.Solucion;
 import defaultSala.Solver;
-import utilidades.ObservadorOfertas;
+import views.ObservadorOfertas;
 
-public class Model {
+public class Sala {
 	
 	Instancia _instancia;
 	ArrayList<Solucion> _soluciones;
 	ArrayList<ObservadorOfertas> _observadores;
 	
-	public Model() {
+	public Sala() {
 		_instancia = new Instancia();
 		_soluciones = new ArrayList<Solucion>();
 		_observadores = new ArrayList<ObservadorOfertas>();
@@ -48,7 +48,7 @@ public class Model {
 	
 	public void nofiticarObservadores(Oferta oferta) {
 		for (ObservadorOfertas observadorOfertas : _observadores) {
-			observadorOfertas.notificar(oferta);
+			observadorOfertas.notificarOferta(oferta);
 		}
 	}
 }

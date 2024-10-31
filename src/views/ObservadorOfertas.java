@@ -1,4 +1,4 @@
-package utilidades;
+package views;
 
 import java.util.ArrayList;
 
@@ -6,5 +6,5 @@ import defaultSala.Oferta;
 
 public interface ObservadorOfertas {
 
-	public void notificar(Oferta oferta);
+	public void notificarOferta(Oferta oferta);
 }

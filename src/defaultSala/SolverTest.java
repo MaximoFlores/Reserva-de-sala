@@ -1,12 +1,8 @@
-package tests;
+package defaultSala;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import defaultSala.Instancia;
-import defaultSala.Oferta;
-import defaultSala.Solver;
 
 public class SolverTest {
 
@@ -38,12 +34,12 @@ public class SolverTest {
 	
 	private Instancia ejemplo() {
 		Instancia ret = new Instancia();
-		ret.agregar(new Oferta("", "", 0, 16000, 8, 12));
-		ret.agregar(new Oferta("", "", 0, 14000, 12, 15));
-		ret.agregar(new Oferta("", "", 0, 10000, 11, 16));
-		ret.agregar(new Oferta("", "", 0, 14000, 7, 11));
-		ret.agregar(new Oferta("", "", 0, 14000, 17, 21));
-		ret.agregar(new Oferta("", "", 0, 8000, 8, 10));
+		ret.agregar(new Oferta("", "", 16000, 8, 12, 0));
+		ret.agregar(new Oferta("", "", 14000, 12, 15, 0));
+		ret.agregar(new Oferta("", "", 10000, 11, 16, 0));
+		ret.agregar(new Oferta("", "", 14000, 7, 11, 0));
+		ret.agregar(new Oferta("", "", 14000, 17, 21, 0));
+		ret.agregar(new Oferta("", "", 8000, 8, 10, 0));
 		return ret;
 		
 	}
