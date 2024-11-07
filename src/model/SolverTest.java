@@ -1,4 +1,4 @@
-package defaultSala;
+package model;
 
 import static org.junit.Assert.*;
 

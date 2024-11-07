@@ -1,4 +1,4 @@
-package defaultSala;
+package model;
 
 public class Oferta {
 	private static int contador = 1;

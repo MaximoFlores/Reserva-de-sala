@@ -1,4 +1,4 @@
-package defaultSala;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;

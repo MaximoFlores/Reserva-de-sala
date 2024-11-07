@@ -2,28 +2,30 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import defaultSala.Instancia;
-import defaultSala.Oferta;
-import defaultSala.Solucion;
-import defaultSala.Solver;
-import views.ObservadorOfertas;
+import views.Observador;
 
 public class Sala {
 	
 	Instancia _instancia;
 	ArrayList<Solucion> _soluciones;
-	ArrayList<ObservadorOfertas> _observadores;
+	ArrayList<Observador> _observadores;
 	
 	public Sala() {
 		_instancia = new Instancia();
 		_soluciones = new ArrayList<Solucion>();
-		_observadores = new ArrayList<ObservadorOfertas>();
+		_observadores = new ArrayList<Observador>();
 	}
 	
 	public void agregarOferta(Oferta oferta) {
 		_instancia.agregar(oferta);
-		nofiticarObservadores(oferta);
+		nofiticarObservadores();
+	}
+	
+	public void eliminarOferta(int ID) {
+		_instancia.eliminarOferta(ID);
+		nofiticarObservadores();
 	}
 	
 	
@@ -42,13 +44,17 @@ public class Sala {
 		return Collections.max(_soluciones, (p,q) -> p.getMonto() - q.getMonto());
 	}
 	
-	public void registrarObservadores(ObservadorOfertas observador) {
+	public void registrarObservadores(Observador observador) {
 		_observadores.add(observador);
 	}
 	
-	public void nofiticarObservadores(Oferta oferta) {
-		for (ObservadorOfertas observadorOfertas : _observadores) {
-			observadorOfertas.notificarOferta(oferta);
+	public void nofiticarObservadores() {
+		for (Observador observadorOfertas : _observadores) {
+			observadorOfertas.notificar(this);
 		}
+	}
+	
+	public List<Oferta>getOfertas() {
+		return _instancia.Ofertas();
 	}
 }

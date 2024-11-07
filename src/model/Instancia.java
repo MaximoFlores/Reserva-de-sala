@@ -1,6 +1,7 @@
-package defaultSala;
+package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Instancia {
 	private int[] _horario;
@@ -22,5 +23,12 @@ public class Instancia {
 
 	public int[] getHorario() {
 		return _horario.clone();
+	}
+
+	public void eliminarOferta(int ID) {
+		Iterator<Oferta> it = _ofertas.iterator();
+		while(it.hasNext())
+			if(it.next().getID() == ID)
+				it.remove();	
 	}	
 }
