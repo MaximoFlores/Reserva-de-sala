@@ -34,8 +34,6 @@ public class Dashboard {
 	private JPanel _panelMenu;
 	private PanelRegistro _panelRegistro;
 	private PanelCalendario _panelCalendario; //cambiar la clase
-	private JPanel _panelArchivo;
-	private JPanel _panelConfig;
 
 	private JLabel lblTitulo;
 
@@ -114,20 +112,10 @@ public class Dashboard {
 		cargarConfigBotonesMenu(btnCalendario, _panelCalendario, "/recursos/calendar-plus.png");
 		btnCalendario.setBounds(0, 221, 270, 60);
 
-		JButton btnArchivo = new JButton("Archivo");
-		cargarConfigBotonesMenu(btnArchivo, _panelArchivo, "/recursos/file-chart.png");
-		btnArchivo.setBounds(0, 281, 270, 60);
-
-		JButton btnConfig = new JButton("Configuracion");
-		cargarConfigBotonesMenu(btnConfig, _panelConfig, "/recursos/Settings.png");
-		btnConfig.setBounds(0, 341, 270, 60);
-
 		_panelMenu.add(lblTitulo);
 		_panelMenu.add(jseparator);
 		_panelMenu.add(btnOfertas);
 		_panelMenu.add(btnCalendario);
-		_panelMenu.add(btnArchivo);
-		_panelMenu.add(btnConfig);
 	}
 
 	public void showPanel(JPanel panel) {
