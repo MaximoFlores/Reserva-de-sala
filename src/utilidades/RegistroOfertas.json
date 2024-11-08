@@ -1,0 +1,40 @@
+{
+  "_horario": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "_ofertas": [
+    {
+      "_id": 1,
+      "_horaDesde": 5,
+      "_horaHasta": 10,
+      "_monto": 1000,
+      "_nombreOferente": "dfsdmfds",
+      "_telefono": "11-1111-1111",
+      "_cantIntegrantes": 1
+    }
+  ],
+  "cantHorasXDia": 24
+}

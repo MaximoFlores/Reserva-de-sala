@@ -2,6 +2,7 @@ package controller;
 
 import model.Oferta;
 import model.Sala;
+import model.Solucion;
 import utilidades.ObservadorSala;
 
 public class Controller {
@@ -23,8 +24,8 @@ public class Controller {
 		return model.hayOfertas();
 	}
 	
-	public Oferta[] getSolAG() {
-		return model.mejorAdjudicacion().getHorario();
+	public Solucion getSolAG() {
+		return model.mejorAdjudicacion();
 	}
 
 	public void agregarObs(ObservadorSala obs) {

@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import controller.Controller;
 import model.Oferta;
+import model.Solucion;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -96,16 +97,19 @@ public class PanelCalendario extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(controlador.existeOfertas()) {
 					limpiarCalendario();
-					Oferta[] oferta = controlador.getSolAG();
+					Solucion mejorSol = controlador.getSolAG();
+					Oferta[] oferta = controlador.getSolAG().getHorario();
 					for (int i = 0; i < horas.size(); i++) {
 						if(oferta[i] != null)
 							horas.get(i).setText((i+1) + ")\nNombre: " + oferta[i].getNombreOferente() + "\nID: "+
 									oferta[i].getID() + " - Telefono: " + oferta[i].getTelefono() +
-									"\nCant.Integrantes: " + oferta[i].getCantIntegrantes());
+									"\nCant.Integrantes: " + oferta[i].getCantIntegrantes() + " - monto: " +oferta[i].getMonto()) ;	
 					}
+					JOptionPane.showMessageDialog(getParent(), "El monto total de la reserva es:  " + mejorSol.getMonto() + ".","Monto total por A. goloso",JOptionPane.DEFAULT_OPTION);
 				}else {
 					JOptionPane.showMessageDialog(getParent(), "No hay ofertas para generar un calendario", "ERROR!!", JOptionPane.ERROR_MESSAGE);
 				}
+				
 			}
 		});
 		btnAGMGoloso.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
