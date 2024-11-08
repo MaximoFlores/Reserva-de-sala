@@ -17,6 +17,11 @@ public class Instancia implements Serializable{
 		_horario = new Oferta[cantHorasXDia];
 	}
 	
+	public Instancia(ArrayList<Oferta> ofertas) {
+		_ofertas = ofertas;
+		_horario = new Oferta[cantHorasXDia];
+	}
+	
 	public void agregar(Oferta oferta) {
 		_ofertas.add(oferta);
 	}

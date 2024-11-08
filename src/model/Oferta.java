@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class Oferta implements Serializable{
 	private static int contador = 1;
 	private int _id;
-	private int _horaDesde;
-	private int _horaHasta;
-	private int _monto;
 	private String _nombreOferente;
 	private String _telefono;
+	private int _monto;
+	private int _horaDesde;
+	private int _horaHasta;
 	private int _cantIntegrantes;
 	
 	public Oferta(String nombreOferente, String telefono, int monto, int horaDesde, int horaHasta, int cantIntegrantes) {

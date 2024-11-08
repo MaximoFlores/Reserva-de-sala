@@ -73,11 +73,11 @@ public class Sala {
 	}
 
 	public void guardarInstancia() {
-		Save.saveInstance(_instancia);	
+		Save.saveInstance(_instancia.Ofertas());	
 	}
 	
 	public void cargarInstancia() {
-		_instancia = Load.loadInstance();
+		_instancia = new Instancia(Load.loadInstance());
 		notificarObservadores();
 	}
 	

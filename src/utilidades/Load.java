@@ -4,25 +4,29 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import model.Instancia;
+import model.Oferta;
 
 public class Load {
 	
-	public static Instancia loadInstance() {
+	public static ArrayList<Oferta> loadInstance() {
         Gson gson = new Gson();
-        Instancia ret = null;
+        ArrayList<Oferta> ret = null;
 
      try{
          BufferedReader br = new BufferedReader(new FileReader("src/utilidades/RegistroOfertas.json"));
-         ret = gson.fromJson(br, Instancia.class);
+         Type ofertaListType = new TypeToken<ArrayList<Oferta>>(){}.getType();
+         ret = (ArrayList<Oferta>) gson.fromJson(br, ofertaListType);
      }
      catch (Exception e) {
 
      }
-
      return ret;
 }
 

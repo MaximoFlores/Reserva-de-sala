@@ -1,40 +1,29 @@
-{
-  "_horario": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  "_ofertas": [
-    {
-      "_id": 1,
-      "_horaDesde": 5,
-      "_horaHasta": 10,
-      "_monto": 1000,
-      "_nombreOferente": "dfsdmfds",
-      "_telefono": "11-1111-1111",
-      "_cantIntegrantes": 1
-    }
-  ],
-  "cantHorasXDia": 24
-}
+[
+  {
+    "_id": 1,
+    "_nombreOferente": "Maximo",
+    "_telefono": "11-1111-1111",
+    "_monto": 1000,
+    "_horaDesde": 5,
+    "_horaHasta": 8,
+    "_cantIntegrantes": 1
+  },
+  {
+    "_id": 2,
+    "_nombreOferente": "Rodrigo",
+    "_telefono": "11-2222-2222",
+    "_monto": 5000,
+    "_horaDesde": 14,
+    "_horaHasta": 18,
+    "_cantIntegrantes": 1
+  },
+  {
+    "_id": 1,
+    "_nombreOferente": "Flores",
+    "_telefono": "11-5555-5555",
+    "_monto": 10000,
+    "_horaDesde": 3,
+    "_horaHasta": 4,
+    "_cantIntegrantes": 3
+  }
+]
