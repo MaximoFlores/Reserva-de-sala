@@ -20,6 +20,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Dashboard {
 
@@ -39,7 +43,7 @@ public class Dashboard {
 		FlatLightLaf.setup();
 		_controlador = controller;
 		_panelRegistro = new PanelRegistro(controller);
-		_panelCalendario = new PanelCalendario();
+		_panelCalendario = new PanelCalendario(controller);
 		_controlador.agregarObs(_panelRegistro);
 		initializeStyles();
 		initialize();	
@@ -51,10 +55,16 @@ public class Dashboard {
 
 	private void initialize() {
 		frame = new JFrame();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				cerrar();			
+			}
+		});
 		frame.setResizable(false);
 		frame.setBounds(0, 0, 1020, 640);
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		_panelPrincipal = new JPanel();
 		_panelPrincipal.setBackground(new Color(255, 255, 255));
@@ -135,7 +145,7 @@ public class Dashboard {
 		lblTitulo.putClientProperty( "FlatLaf.style", "font: bold $h1.font" );
 		lblTitulo.setForeground(Color.WHITE);
 	}
-	
+
 	private void cargarConfigBotonesMenu(JButton boton,JPanel panelAMostrar, String icon) {
 		boton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -151,5 +161,14 @@ public class Dashboard {
 		boton.setBorderPainted(false);
 		boton.setBorder(new MatteBorder(1, 10, 1, 1, (Color) new Color(0, 0, 0)));
 		boton.setBackground(new Color(21, 101, 192));	
+	}
+
+	private void cerrar() { 
+		if(_controlador.hayCambios()) {
+			int option = JOptionPane.showOptionDialog(frame, "Quieres guardar las ofertas antes de cerrar?", "Guardar?", 0, 0, null, null, frame);
+			if(option == JOptionPane.YES_OPTION)
+				_controlador.guardarInstancia();
+		}
+		System.exit(0);
 	}
 }

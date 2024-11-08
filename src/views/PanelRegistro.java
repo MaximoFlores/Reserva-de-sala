@@ -12,6 +12,8 @@ import controller.Controller;
 import model.Oferta;
 import model.Sala;
 import utilidades.CustomAlignmentRenderer;
+import utilidades.Load;
+import utilidades.ObservadorSala;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,7 +42,7 @@ import java.awt.event.MouseEvent;
 import java.awt.Cursor;
 import javax.swing.JSeparator;
 
-public class PanelRegistro extends JPanel implements Observador{
+public class PanelRegistro extends JPanel implements ObservadorSala{
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
@@ -51,35 +53,38 @@ public class PanelRegistro extends JPanel implements Observador{
 	private JSpinner spCantInt;
 	private JSpinner spHasta;
 	private JSpinner spDesde;
-	private JLabel lblErrorTelefono;
 	private JButton btnAñadirOferta;
 	private Controller _controlador;
 	private JTextArea lblMensageBotones;
 
 	public PanelRegistro(Controller controlador) {
-		setOpaque(false);
-		UIManager.put("Table.showHorizontalLines", true);
-		UIManager.put("Table.showVerticalLines", true);
 		_controlador = controlador;
-		this.setBounds(0, 0, 732, 603);
 		setLayout(null);
+		setOpaque(false);
+		cargarEstilo();
+		this.setBounds(0, 0, 732, 603);
 
 		cargarTabla();
 		cargarBotones();
 		cargarEstilos();
 	}
 
+	private void cargarEstilo() {
+		UIManager.put("Table.showHorizontalLines", true);
+		UIManager.put("Table.showVerticalLines", true);
+	}
+
 	private void cargarBotones() {
-		JLabel lblNombre = new JLabel("Nombre");
+		JLabel lblNombre = new JLabel("Nombre (24 characters)");
 		lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		lblNombre.setBounds(44, 419, 95, 20);
+		lblNombre.setBounds(44, 419, 150, 20);
 
 		tfNombre = new JTextField();
 		tfNombre.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char l = Character.toLowerCase(e.getKeyChar());
-				if(!(l>='a' && l<='z' || l == ' '))
+				if(!(l>='a' && l<='z' || l == ' ' ) || tfNombre.getText().length() > 22 )
 					e.consume();
 			}
 		});
@@ -91,23 +96,13 @@ public class PanelRegistro extends JPanel implements Observador{
 		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		lblTelefono.setBounds(44, 477, 95, 20);
 
-		lblErrorTelefono = new JLabel("");
-		lblErrorTelefono.setBounds(94, 482, 100, 13);
-
 		tfTelefono = new JTextField();
 		tfTelefono.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char l = e.getKeyChar();
-				if(!(l >= '0' && l <= '9') || tfTelefono.getText().length()>=10)
+				if(!(l >= '0' && l <= '9' || l == '-') || tfTelefono.getText().length()>=12)
 					e.consume();
-			}
-		});
-		tfTelefono.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				if(tfTelefono.getText().length()<10)
-					tfTelefono.putClientProperty("JComponent.outline", "error");
 			}
 		});
 		tfTelefono.setHorizontalAlignment(SwingConstants.LEFT);
@@ -183,9 +178,8 @@ public class PanelRegistro extends JPanel implements Observador{
 		btnAñadirOferta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblMensageBotones.setText("Registra la oferta \n "
-						+ "pasada con los valores elegidos");
-				
+				lblMensageBotones.setText("Registra la oferta pasada con los valores elegidos.");
+
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -194,8 +188,9 @@ public class PanelRegistro extends JPanel implements Observador{
 		});
 		btnAñadirOferta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				if(tfNombre.getText().isEmpty() || tfTelefono.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(getParent(), "Algun dato ingresado es invalido!!", "Error", JOptionPane.ERROR_MESSAGE);
+				String telefono = tfTelefono.getText();
+				if(tfNombre.getText().isEmpty() || !telefono.matches("11-\\d{4}-\\d{4}") || tfTelefono.getText().length() < 12 ) {
+					JOptionPane.showMessageDialog(getRootPane(), "Algun dato ingresado es invalido!!", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					int monto = Integer.parseInt(tfMonto.getText());
@@ -203,7 +198,7 @@ public class PanelRegistro extends JPanel implements Observador{
 					int horaHasta = (int) spHasta.getValue();
 					int cantIntegrantes = (int) spCantInt.getValue();
 
-					Oferta oferta = new Oferta(tfNombre.getText(), tfTelefono.getText(), monto, horaDesde, horaHasta, cantIntegrantes);
+					Oferta oferta = new Oferta(tfNombre.getText(), telefono, monto, horaDesde, horaHasta, cantIntegrantes);
 					_controlador.agregarOferta(oferta);
 					limpiarCampos();		
 				}	
@@ -211,7 +206,7 @@ public class PanelRegistro extends JPanel implements Observador{
 		});
 		btnAñadirOferta.setForeground(new Color(0, 0, 0));
 		btnAñadirOferta.setBackground(new Color(255, 255, 255));
-		btnAñadirOferta.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnAñadirOferta.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		btnAñadirOferta.setBounds(387, 440, 130, 40);
 
 		JButton btnEliminarOferta = new JButton("Eliminar Oferta");
@@ -219,6 +214,10 @@ public class PanelRegistro extends JPanel implements Observador{
 		btnEliminarOferta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				lblMensageBotones.setText("Elimina la oferta seleccionada.");
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
 				lblMensageBotones.setText("");
 			}
 		});
@@ -233,12 +232,24 @@ public class PanelRegistro extends JPanel implements Observador{
 		});
 		btnEliminarOferta.setForeground(new Color(0, 0, 0));
 		btnEliminarOferta.setBackground(new Color(255, 255, 255));
-		btnEliminarOferta.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnEliminarOferta.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		btnEliminarOferta.setBounds(387, 490, 130, 40);
 
 		JButton btnCargarArchivo = new JButton("Cargar Archivo");
+		btnCargarArchivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Load.hayArchivoInstancia())
+					_controlador.cargarInstancia();
+				else
+					JOptionPane.showMessageDialog(getRootPane(), "No hay ofertas guardadas", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 		btnCargarArchivo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCargarArchivo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblMensageBotones.setText("Cargar ofertas.");
+			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				lblMensageBotones.setText("");
@@ -246,12 +257,11 @@ public class PanelRegistro extends JPanel implements Observador{
 		});
 		btnCargarArchivo.setForeground(new Color(0, 0, 0));
 		btnCargarArchivo.setBackground(new Color(255, 255, 255));
-		btnCargarArchivo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnCargarArchivo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		btnCargarArchivo.setBounds(387, 540, 130, 40);	
 
 		add(lblNombre);
 		add(tfNombre);
-		add(lblErrorTelefono);
 		add(lblTelefono);
 		add(tfTelefono);
 		add(lblHorario);
@@ -266,15 +276,15 @@ public class PanelRegistro extends JPanel implements Observador{
 		add(btnAñadirOferta);
 		add(btnEliminarOferta);
 		add(btnCargarArchivo);
-		
+
 		lblMensageBotones = new JTextArea("");
-		lblMensageBotones.setBounds(558, 419, 130, 165);
+		lblMensageBotones.setBounds(558, 442, 130, 134);
 		lblMensageBotones.setLineWrap(true); 
 		lblMensageBotones.setWrapStyleWord(true); 
 		lblMensageBotones.setEditable(false); 
 		lblMensageBotones.setOpaque(false); 
 		add(lblMensageBotones);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setForeground(new Color(182, 182, 182));
 		separator.setOrientation(SwingConstants.VERTICAL);
@@ -312,7 +322,7 @@ public class PanelRegistro extends JPanel implements Observador{
 
 	private void cargarEstilos() {
 		tfNombre.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Introduce un nombre");
-		tfTelefono.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Introduce un telefono");
+		tfTelefono.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "11-####-####");
 	}
 
 	@Override
@@ -320,7 +330,9 @@ public class PanelRegistro extends JPanel implements Observador{
 		List<Oferta> ofertas = sala.getOfertas();
 		modelTable.setRowCount(0);
 		for (Oferta oferta : ofertas) {
-			String horario = oferta.getHoraDesde() + " a " + oferta.getHoraHasta();
+			int horaHasta = oferta.getHoraHasta()==25?1:oferta.getHoraHasta();
+			String horario = oferta.getHoraDesde() + " a " + horaHasta;
+
 			modelTable.addRow(new Object[] {oferta.getID(), oferta.getNombreOferente(), 
 					oferta.getTelefono(), oferta.getMonto(), horario, oferta.getCantIntegrantes()});
 		}

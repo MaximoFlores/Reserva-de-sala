@@ -4,32 +4,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import views.Observador;
+import utilidades.Load;
+import utilidades.ObservadorSala;
+import utilidades.Save;
 
 public class Sala {
 	
-	Instancia _instancia;
-	ArrayList<Solucion> _soluciones;
-	ArrayList<Observador> _observadores;
+	private Instancia _instancia;
+	private ArrayList<Solucion> _soluciones;
+	private ArrayList<ObservadorSala> _observadores;
+	private boolean hayCambio;
 	
 	public Sala() {
 		_instancia = new Instancia();
 		_soluciones = new ArrayList<Solucion>();
-		_observadores = new ArrayList<Observador>();
+		_observadores = new ArrayList<ObservadorSala>();
 	}
 	
 	public void agregarOferta(Oferta oferta) {
 		_instancia.agregar(oferta);
-		nofiticarObservadores();
+		hayCambio = true;
+		notificarObservadores();
 	}
 	
 	public void eliminarOferta(int ID) {
 		_instancia.eliminarOferta(ID);
-		nofiticarObservadores();
+		hayCambio = true;
+		notificarObservadores();
 	}
 	
 	
 	public Solucion mejorAdjudicacion() {
+		_soluciones.clear();
 		// Mejor oferta
 		_soluciones.add(new Solver(_instancia, (one,other) -> other.getMonto() - one.getMonto()).resolver());
 		// Mejor hora
@@ -44,12 +50,20 @@ public class Sala {
 		return Collections.max(_soluciones, (p,q) -> p.getMonto() - q.getMonto());
 	}
 	
-	public void registrarObservadores(Observador observador) {
+	public void registrarObservadores(ObservadorSala observador) {
 		_observadores.add(observador);
 	}
 	
-	public void nofiticarObservadores() {
-		for (Observador observadorOfertas : _observadores) {
+	public boolean hayOfertas() {
+		return _instancia.getCantOfertas()>=1;
+	}
+	
+	public boolean hayCambio() {
+		return hayCambio;
+	}
+
+	public void notificarObservadores() {
+		for (ObservadorSala observadorOfertas : _observadores) {
 			observadorOfertas.notificar(this);
 		}
 	}
@@ -57,4 +71,14 @@ public class Sala {
 	public List<Oferta>getOfertas() {
 		return _instancia.Ofertas();
 	}
+
+	public void guardarInstancia() {
+		Save.saveInstance(_instancia);	
+	}
+	
+	public void cargarInstancia() {
+		_instancia = Load.loadInstance();
+		notificarObservadores();
+	}
+	
 }

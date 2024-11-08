@@ -1,8 +1,8 @@
-package views;
+package utilidades;
 
 import model.Sala;
 
-public interface Observador {
+public interface ObservadorSala {
 
 	public void notificar(Sala sala);
 }

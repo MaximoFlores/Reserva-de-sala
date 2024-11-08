@@ -1,6 +1,8 @@
 package model;
 
-public class Oferta {
+import java.io.Serializable;
+
+public class Oferta implements Serializable{
 	private static int contador = 1;
 	private int _id;
 	private int _horaDesde;
@@ -17,7 +19,7 @@ public class Oferta {
 		_cantIntegrantes = cantIntegrantes;
 		_monto = monto;
 		_horaDesde = horaDesde;
-		_horaHasta = horaHasta;
+		_horaHasta = horaDesde == horaHasta?(horaHasta+1):horaHasta;
 		_id = contador++;
 	}
 	private void verificarHorario(int desde, int hasta) {

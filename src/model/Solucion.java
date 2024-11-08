@@ -6,7 +6,7 @@ public class Solucion {
 
 	private Instancia _instancia;
 	private ArrayList<Oferta> _ofertas;
-	public int[] _horario;
+	private Oferta[] _horario;
 	private int _monto;
 	
 	public Solucion(Instancia instancia) {
@@ -23,17 +23,21 @@ public class Solucion {
 
 	private void setHorario(Oferta oferta) {
 		for (int i = oferta.getHoraDesde()-1; i < oferta.getHoraHasta()-1; i++) {
-			_horario[i] = 1;
+			_horario[i] = oferta;
 		}
 	}	
 	
 	public boolean horarioDisponible(Oferta oferta) {
 		for (int i = oferta.getHoraDesde()-1; i < oferta.getHoraHasta()-1; i++) {
-			if(_horario[i]==1) {
+			if(_horario[i]!=null) {
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	public Oferta[] getHorario() {
+		return _horario.clone();
 	}
 
 	public int getMonto() {
